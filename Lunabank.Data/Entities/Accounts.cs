@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lunabank.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,8 +27,8 @@ namespace Lunabank.Data.Entities
         [Column(TypeName = "decimal(18, 4)")]
         public decimal Balance { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        [InverseProperty(nameof(AspNetUsers.Accounts))]
-        public virtual AspNetUsers User { get; set; }
+        //        [ForeignKey(nameof(UserId))]
+        //        [InverseProperty(nameof(AppUser))]
+        public virtual AppUser User { get; set; }
     }
 }
