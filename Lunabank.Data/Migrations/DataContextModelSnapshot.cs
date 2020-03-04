@@ -302,7 +302,7 @@ namespace Lunabank.Data.Migrations
             modelBuilder.Entity("Lunabank.Data.Entities.Accounts", b =>
                 {
                     b.HasOne("Lunabank.Data.Models.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Accounts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
