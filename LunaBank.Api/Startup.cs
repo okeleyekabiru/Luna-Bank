@@ -31,10 +31,10 @@ namespace LunaBank.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContextPool<DataContext>(opt =>
+            services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                
+
             });
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<DataContext>();
             services.AddScoped<ITransactionRepo, TransactionRepo>();
