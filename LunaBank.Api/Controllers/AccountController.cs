@@ -67,20 +67,5 @@ namespace LunaBank.Api.Controllers
             return NotFound("No Account registered yet");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Accounts accounts)
-        {
-            accounts.CreatedOn = DateTime.Now;
-            accounts.UserId = "86970b86-9a92-433b-ade0-3e0bb5014ddb";
-            accounts.AccountId = Guid.NewGuid();
-            var model = await _accountRepo.Create(accounts);
-            if (model != null)
-            {
-                var newmodel = _mapper.Map<Accounts, AccountModel>(model);
-                return Ok(newmodel);
-            }
-
-            return StatusCode(500, new {error = "Internal Server error"});
-        }
     }
 }
