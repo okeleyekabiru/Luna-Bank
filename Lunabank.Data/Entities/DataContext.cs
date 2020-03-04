@@ -1,10 +1,12 @@
 ﻿using System;
+using Lunabank.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Lunabank.Data.Entities
 {
-    public partial class DataContext : DbContext
+    public partial class DataContext : IdentityDbContext<AppUser>
     {
         public DataContext()
         {
@@ -25,14 +27,7 @@ namespace Lunabank.Data.Entities
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Transactions> Transactions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=Toby;Initial Catalog=LunaBank;Integrated Security=True;");
-            }
-        }
+    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

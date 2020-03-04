@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lunabank.Data.Entities;
 using Lunabank.Data.Models;
+using Lunabank.Data.Repos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,7 +37,10 @@ namespace LunaBank.Api
                 
             });
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<DataContext>();
-          
+            services.AddScoped<ITransactionRepo, TransactionRepo>();
+            services.AddScoped<IAccounRepo, AccountRepo>();
+            services.AddScoped<IAdminRepo, AdminRepo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
