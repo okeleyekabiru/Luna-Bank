@@ -52,8 +52,8 @@ namespace LunaBank.Api.Controllers
                     var previousUrl = _httpContextAccessor.HttpContext.Request.Host.Value +
                                       $"api/account?PageSize={_pageSize}&pageIndex={PageIndex - 1}";
                     var newModel = _mapper.Map<IEnumerable<Accounts>, IEnumerable<AccountModel>>(totalPage);
-                    HttpContext.Response.Headers.Add("NextPage",currentUr);
-                    HttpContext.Response.Headers.Add("PreviousPage",previousUrl);
+                    HttpContext.Response.Headers.Add("NextPage", currentUr);
+                    HttpContext.Response.Headers.Add("PreviousPage", previousUrl);
                     return Ok(newModel);
                 }
             }
@@ -66,6 +66,31 @@ namespace LunaBank.Api.Controllers
 
             return NotFound("No Account registered yet");
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetAnAccount(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid request ");
+            }
 
+            try
+            {
+
+           
+            var model =await _accountRepo.GetAccounts(id);
+            if (model != null)
+            {
+                var newModel = _mapper.Map<Accounts, AccountModel>(model);
+                return Ok(newModel);
+            }
+            }
+            catch (Exception e)
+            {
+                _logger.LogTrace(e.Message);
+                return StatusCode(500, new {error = "Internal Server error"});
+            }
+            return NotFound("Account Not Available");
+        }
     }
 }
