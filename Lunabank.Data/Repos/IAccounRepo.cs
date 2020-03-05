@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Lunabank.Data.Entities;
@@ -12,6 +13,7 @@ namespace Lunabank.Data.Repos
         Task<IEnumerable<Accounts>> GetAllAccount();
         Task<Accounts> GetAccounts(Guid id);
         Task<Accounts> Create(Accounts accounts);
+        Task<Accounts> Debit(decimal amount, string accountnumber);
 
     }
 }
