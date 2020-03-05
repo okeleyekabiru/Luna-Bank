@@ -100,21 +100,21 @@ namespace LunaBank.Api.Controllers
             var status = await _userManager.CheckPasswordAsync(user, model.Password);
             if (user != null && status)
             {
-                //                var tokenDescriptor = new SecurityTokenDescriptor
-                //                {
-                //                    Subject = new ClaimsIdentity(new Claim[]
-                //                    {
-                //                        new Claim("UserID", user.Id.ToString()),
-                //                    }),
-                //                    Expires = DateTime.UtcNow.AddMinutes(5),
-                //                    SigningCredentials = new SigningCredentials(
-                //                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
-                //                        SecurityAlgorithms.HmacSha256Signature)
-                //                };
-                //                var tokenHandler = new JwtSecurityTokenHandler();
-                //                var securityToken = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
-                //                var token = tokenHandler.WriteToken(securityToken);
-                return Ok(new { status, data = new { user.Id, user.FirstName, user.LastName, user.Email } });
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserID", user.Id.ToString()),
+                    }),
+                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    SigningCredentials = new SigningCredentials(
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
+                        SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { status, data = new { token, user.Id, user.FirstName, user.LastName, user.Email } });
             }
             else
             {
