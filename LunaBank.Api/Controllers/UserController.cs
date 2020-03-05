@@ -89,6 +89,42 @@ namespace LunaBank.Api.Controllers
         #endregion
 
 
+        #region Login
+
+        [HttpPost]
+        [Route("Login")]
+        //Post : api/User/Login
+        public async Task<IActionResult> Login(UserDto model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Email);
+            var status = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (user != null && status)
+            {
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserID", user.Id.ToString()),
+                    }),
+                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    SigningCredentials = new SigningCredentials(
+                        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
+                        SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { status, data = new { token, user.Id, user.FirstName, user.LastName, user.Email } });
+            }
+            else
+            {
+                return BadRequest(new { message = "Username or password is incorrect." });
+            }
+        }
+
+        #endregion
+
+
 
 
 
