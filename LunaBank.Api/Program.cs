@@ -16,24 +16,24 @@ namespace LunaBank.Api
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<DataContext>();
-                    context.Database.Migrate();
-                    //                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                    //                    Seed.SeedGenerator(context, userManager).Wait();
-
-                }
-                catch (Exception e)
-                {
-                    var logger = services.GetRequiredService<ILogger<DataContext>>();
-                    logger.LogError(e, "An Error Occured While Migrating Database");
-                }
-                host.Run();
-            }
+            //            using (var scope = host.Services.CreateScope())
+            //            {
+            //                var services = scope.ServiceProvider;
+            //                try
+            //                {
+            //                    var context = services.GetRequiredService<DataContext>();
+            //                    context.Database.Migrate();
+            //                    //                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+            //                    //                    Seed.SeedGenerator(context, userManager).Wait();
+            //
+            //                }
+            //                catch (Exception e)
+            //                {
+            //                    var logger = services.GetRequiredService<ILogger<DataContext>>();
+            //                    logger.LogError(e, "An Error Occured While Migrating Database");
+            //                }
+            host.Run();
+            //            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
