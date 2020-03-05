@@ -22,9 +22,9 @@ namespace LunaBank.Api
                 try
                 {
                     var context = services.GetRequiredService<DataContext>();
-//                    context.Database.Migrate();
-                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
-                    Seed.SeedGenerator(context, userManager).Wait();
+                    context.Database.Migrate();
+                    //                    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                    //                    Seed.SeedGenerator(context, userManager).Wait();
 
                 }
                 catch (Exception e)
