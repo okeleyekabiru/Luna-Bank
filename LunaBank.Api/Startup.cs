@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Lunabank.Data.Entities;
 using Lunabank.Data.Models;
 using Lunabank.Data.Repos;
@@ -40,7 +41,10 @@ namespace LunaBank.Api
             services.AddScoped<ITransactionRepo, TransactionRepo>();
             services.AddScoped<IAccounRepo, AccountRepo>();
             services.AddScoped<IAdminRepo, AdminRepo>();
-
+            services.AddAutoMapper(typeof(AppUser));
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +55,7 @@ namespace LunaBank.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+//            app.UseHttpsRedirection();
 
             app.UseRouting();
 

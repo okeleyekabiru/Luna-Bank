@@ -9,8 +9,9 @@ namespace Lunabank.Data.Repos
 {
     public interface IAccounRepo
     {
-      
-      
+        Task<IEnumerable<Accounts>> GetAllAccount();
+        Task<Accounts> GetAccounts(Guid id);
+        Task<Accounts> Create(Accounts accounts);
 
     }
 }

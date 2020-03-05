@@ -15,7 +15,7 @@ namespace Lunabank.Data.Entities
         public string AccountNumber { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreatedOn { get; set; }
-        [Required]
+//        [Required]
         [StringLength(450)]
         public string UserId { get; set; }
         [Required]
@@ -26,9 +26,6 @@ namespace Lunabank.Data.Entities
         public string Status { get; set; }
         [Column(TypeName = "decimal(18, 4)")]
         public decimal Balance { get; set; }
-
-        //        [ForeignKey(nameof(UserId))]
-        //        [InverseProperty(nameof(AppUser))]
         public virtual AppUser User { get; set; }
     }
 }

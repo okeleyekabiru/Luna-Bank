@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lunabank.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200304161510_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20200304170242_Added identity")]
+    partial class Addedidentity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,19 +24,18 @@ namespace Lunabank.Data.Migrations
             modelBuilder.Entity("Lunabank.Data.Entities.Accounts", b =>
                 {
                     b.Property<Guid>("AccountId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("AccountType")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18, 4)");
@@ -46,9 +45,8 @@ namespace Lunabank.Data.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -62,216 +60,16 @@ namespace Lunabank.Data.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetRoleClaims", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims1");
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetRoles", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasName("RoleNameIndex")
-                        .HasFilter("([NormalizedName] IS NOT NULL)");
-
-                    b.ToTable("AspNetRoles1");
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserClaims", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims1");
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserLogins", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins1");
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserRoles", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles1");
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserTokens", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens1");
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUsers", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("([NormalizedUserName] IS NOT NULL)");
-
-                    b.ToTable("AspNetUsers1");
-                });
-
             modelBuilder.Entity("Lunabank.Data.Entities.Transactions", b =>
                 {
                     b.Property<Guid>("TransactionId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18, 4)");
@@ -293,9 +91,8 @@ namespace Lunabank.Data.Migrations
 
                     b.Property<string>("TransactionType")
                         .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("TransactionId");
 
@@ -506,59 +303,8 @@ namespace Lunabank.Data.Migrations
 
             modelBuilder.Entity("Lunabank.Data.Entities.Accounts", b =>
                 {
-                    b.HasOne("Lunabank.Data.Entities.AspNetUsers", "User")
+                    b.HasOne("Lunabank.Data.Models.AppUser", "User")
                         .WithMany("Accounts")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Accounts_Accounts")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetRoleClaims", b =>
-                {
-                    b.HasOne("Lunabank.Data.Entities.AspNetRoles", "Role")
-                        .WithMany("AspNetRoleClaims")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserClaims", b =>
-                {
-                    b.HasOne("Lunabank.Data.Entities.AspNetUsers", "User")
-                        .WithMany("AspNetUserClaims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserLogins", b =>
-                {
-                    b.HasOne("Lunabank.Data.Entities.AspNetUsers", "User")
-                        .WithMany("AspNetUserLogins")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserRoles", b =>
-                {
-                    b.HasOne("Lunabank.Data.Entities.AspNetRoles", "Role")
-                        .WithMany("AspNetUserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Lunabank.Data.Entities.AspNetUsers", "User")
-                        .WithMany("AspNetUserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Lunabank.Data.Entities.AspNetUserTokens", b =>
-                {
-                    b.HasOne("Lunabank.Data.Entities.AspNetUsers", "User")
-                        .WithMany("AspNetUserTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
