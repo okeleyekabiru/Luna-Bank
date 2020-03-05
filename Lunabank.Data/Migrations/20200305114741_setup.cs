@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Lunabank.Data.Migrations
 {
-    public partial class Addedidentity : Migration
+    public partial class setup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,8 +54,8 @@ namespace Lunabank.Data.Migrations
                 {
                     TransactionId = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    TransactionType = table.Column<string>(maxLength: 50, nullable: false),
-                    AccountNumber = table.Column<string>(maxLength: 50, nullable: false),
+                    TransactionType = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    AccountNumber = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
                     cashier = table.Column<string>(maxLength: 128, nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18, 4)", nullable: false),
                     OldBalance = table.Column<decimal>(type: "decimal(18, 4)", nullable: false),
@@ -92,22 +92,22 @@ namespace Lunabank.Data.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<Guid>(nullable: false),
-                    AccountNumber = table.Column<string>(maxLength: 50, nullable: false),
+                    AccountNumber = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<string>(maxLength: 450, nullable: false),
-                    AccountType = table.Column<string>(maxLength: 50, nullable: false),
-                    Status = table.Column<string>(maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(maxLength: 450, nullable: true),
+                    AccountType = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    Status = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
                     Balance = table.Column<decimal>(type: "decimal(18, 4)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.AccountId);
                     table.ForeignKey(
-                        name: "FK_Accounts_AspNetUsers_UserId",
+                        name: "FK_Accounts_Accounts",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(

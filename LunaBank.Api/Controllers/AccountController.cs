@@ -91,5 +91,20 @@ namespace LunaBank.Api.Controllers
             }
             return NotFound("Account Not Available");
         }
+        [HttpPost]
+        public async Task<ActionResult> Create(Accounts accounts)
+        {
+            accounts.UserId = "218fc0aa-8da2-485e-9a05-133a1cc82c5a";
+            accounts.AccountId = Guid.NewGuid();
+            accounts.CreatedOn = DateTime.Now;
+            
+            var model = await _accountRepo.Create(accounts);
+            if (model != null)
+            {
+                return Ok(model);
+            }
+
+            return BadRequest("Error");
+        }
     }
 }

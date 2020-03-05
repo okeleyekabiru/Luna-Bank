@@ -32,6 +32,7 @@ namespace Lunabank.Data.Repos
      
         public async Task<Accounts> Create(Accounts accounts)
         {
+
             var user = await  _context.Users.FindAsync(accounts.UserId);
             accounts.User = user;
            _context.Add(accounts);
