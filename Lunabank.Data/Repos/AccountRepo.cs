@@ -18,26 +18,45 @@ namespace Lunabank.Data.Repos
         {
             _context = context;
         }
+
         public async Task<IEnumerable<Accounts>> GetAllAccount()
         {
-            return await _context.Accounts.Include(r=> r.User).ToListAsync();
+            return await _context.Accounts.Include(r => r.User).ToListAsync();
         }
 
         public async Task<Accounts> GetAccounts(Guid id)
         {
-
             return await _context.Accounts.Include(r => r.User).FirstOrDefaultAsync(r => r.AccountId == id);
-
         }
-     
+
         public async Task<Accounts> Create(Accounts accounts)
         {
 
-            var user = await  _context.Users.FindAsync(accounts.UserId);
+            var user = await _context.Users.FindAsync(accounts.UserId);
             accounts.User = user;
-           _context.Add(accounts);
-            var success =await _context.SaveChangesAsync() > 0;
+            _context.Add(accounts);
+            var success = await _context.SaveChangesAsync() > 0;
             if (success) return accounts;
+            return null;
+        }
+
+        public async Task<Accounts> Debit(decimal amount, string accountnumber)
+        {
+
+            var account = await _context.Accounts.FirstOrDefaultAsync(r => r.AccountNumber == accountnumber);
+            if (account.Balance < amount)
+            {
+                return null;
+            }
+
+            account.Balance -= amount;
+            _context.Entry(account).State = EntityState.Modified;
+            var success = await _context.SaveChangesAsync() > 0;
+            if (success)
+            {
+                return account;
+            }
+
             return null;
         }
     }

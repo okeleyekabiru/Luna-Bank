@@ -49,6 +49,48 @@ namespace LunaBack.Test
             }
 
         }
+        [Fact]
+        public async void DebitAccountFailed_Test()
+        {
+            using (var context = new HttpClient())
+            {
+                var request = new
+                {
+                    Uri = "http://localhost:5000/api/account/debitaccount",
+                    Body = new
+                    {
+                        AccountNumber="2928382993",
+                        Amount=50000
+                    }
+                };
+                var response = await context.PostAsync(request.Uri, ContentHelper.GetStringContent(request.Body));
+                var value =  response.Content.ReadAsStringAsync();
+                Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+                Assert.StartsWith("insufficient",value.Result);
+
+            }
+        }
+        [Fact]
+        public async void DebitAccountPass_Test()
+        {
+            using (var context = new HttpClient())
+            {
+                var request = new
+                {
+                    Uri = "http://localhost:5000/api/account/debitaccount",
+                    Body = new
+                    {
+                        AccountNumber = "2928382992",
+                        Amount = 200
+                    }
+                };
+                var response = await context.PostAsync(request.Uri, ContentHelper.GetStringContent(request.Body));
+                var value = response.Content.ReadAsStringAsync();
+                Assert.True(response.IsSuccessStatusCode);
+                Assert.NotNull(value);
+
+            }
+        }
 
     }
 }
