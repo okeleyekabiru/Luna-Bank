@@ -22,7 +22,6 @@ namespace LunaBank.Api.Controllers
         private readonly IAccounRepo _accountRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private static int PageIndex;
 
         public AccountController(ILogger<AccountController> logger, IAccounRepo accountRepo, IMapper mapper,
             IHttpContextAccessor httpContextAccessor)
@@ -34,23 +33,23 @@ namespace LunaBank.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAccount(int pageSize, int pageIndex)
+        public async Task<IActionResult> GetAllAccount(int pageSize = 3, int pageIndex = 1)
         {
             try
             {
                 var model = await _accountRepo.GetAllAccount();
                 var totalCount = model.ToList().Count;
                 var _pageSize = (pageSize > totalCount) ? totalCount : pageSize;
-                PageIndex += pageIndex;
+             
 
 
                 if (totalCount > 0)
                 {
-                    var totalPage = model.Skip(_pageSize * (PageIndex - 1)).Take(_pageSize).ToList();
+                    var totalPage = model.Skip(_pageSize * (pageIndex - 1)).Take(_pageSize).ToList();
                     var currentUr = _httpContextAccessor.HttpContext.Request.Host.Value +
-                                    $"api/account?PageSize={_pageSize}&pageIndex={PageIndex + 1}";
+                                    $"api/account?PageSize={_pageSize}&pageIndex={pageIndex + 1}";
                     var previousUrl = _httpContextAccessor.HttpContext.Request.Host.Value +
-                                      $"api/account?PageSize={_pageSize}&pageIndex={PageIndex - 1}";
+                                      $"api/account?PageSize={_pageSize}&pageIndex={pageIndex - 1}";
                     var newModel = _mapper.Map<IEnumerable<Accounts>, IEnumerable<AccountModel>>(totalPage);
                     HttpContext.Response.Headers.Add("NextPage", currentUr);
                     HttpContext.Response.Headers.Add("PreviousPage", previousUrl);
