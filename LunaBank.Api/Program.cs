@@ -38,6 +38,9 @@ namespace LunaBank.Api
                 host.Run();
             }
 
+
+
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

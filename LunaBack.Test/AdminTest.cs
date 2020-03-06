@@ -109,5 +109,47 @@ namespace LunaBack.Test
            }
        }
 
+       [Fact]
+       public async void AddToRoleFail()
+       {
+           using (var context = new HttpClient())
+           {
+               var request = new
+               {
+                   email = "bob@gmail.com",
+                   role = "Staff"
+               };
+               var res = await context.PostAsync(
+                   "http://localhost:5000/api/admin/addRole", ContentHelper.GetStringContent(request) );
+
+               Assert.True(res.StatusCode == HttpStatusCode.BadRequest);
+
+               var check = res.Content.ReadAsStringAsync();
+               Assert.StartsWith("User", check.Result);
+
+           }
+       }
+
+       [Fact]
+       public async void AddToRolePass()
+       {
+           using (var context = new HttpClient())
+           {
+               var request = new
+               {
+                   email = "tim@gmail.com",
+                   role = "Staff"
+               };
+               var res = await context.PostAsync(
+                   "http://localhost:5000/api/admin/addRole", ContentHelper.GetStringContent(request));
+
+               Assert.True(res.IsSuccessStatusCode);
+
+               var check = res.Content.ReadAsStringAsync();
+               Assert.NotEmpty(check.Result);
+
+           }
+       }
+
     }
 }
