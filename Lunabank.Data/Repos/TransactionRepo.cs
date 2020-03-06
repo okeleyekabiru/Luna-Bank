@@ -15,7 +15,7 @@ namespace Lunabank.Data.Repos
         }
         public void create(Transactions transaction)
         {
-            transaction.TransactionId = new Guid();
+            transaction.TransactionId = Guid.NewGuid();
             _context.Transactions.Add(transaction);
         }
     }

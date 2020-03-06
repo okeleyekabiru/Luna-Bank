@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lunabank.Data.Entities;
@@ -29,23 +30,19 @@ namespace Lunabank.Data.Repos
             return await _context.Accounts.Include(r => r.User).FirstOrDefaultAsync(r => r.AccountId == id);
         }
 
-        public async Task<Accounts> Create(AccountCreationDto type, AppUser user)
+        public async Task<Accounts> GetAccount(string accountNumber)
         {
-            var accountNumber = await createAccountNumber();
-            return new Accounts
-            {
-                AccountId = Guid.NewGuid(),
-                AccountNumber = accountNumber,
-                AccountType = type.AccountType,
-                Balance = 0,
-                User = user,
-                CreatedOn = DateTime.Now,
-                Status = "active"
-
-            };
+            return await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == accountNumber);
         }
 
-        public async Task<string> createAccountNumber()
+        public void Create(Accounts account)
+        {
+            account.AccountNumber =  CreateAccountNumber();
+            account.AccountId = Guid.NewGuid();
+            _context.Accounts.Add(account);
+        }
+
+        public string CreateAccountNumber()
         {
             bool isAvailable = true;
             string accountNumber;
@@ -55,7 +52,7 @@ namespace Lunabank.Data.Repos
                 Random random = new Random();
                 string generator = random.Next(0, 99999999).ToString("D8");
                 accountNumber = startWith + generator;
-                var account = await _context.Accounts.FirstOrDefaultAsync(a => a.AccountNumber == accountNumber);
+                var account = _context.Accounts.FirstOrDefault(a => a.AccountNumber == accountNumber);
                 if (account == null)
                 {
                     isAvailable = false;

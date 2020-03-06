@@ -24,15 +24,17 @@ namespace LunaBank.Api.Controllers
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepo _userRepo;
+        private readonly ITransactionRepo _transactionRepo;
 
         public AccountController(ILogger<AccountController> logger, IAccounRepo accountRepo, IMapper mapper,
-            IHttpContextAccessor httpContextAccessor, IUserRepo userRepo)
+            IHttpContextAccessor httpContextAccessor, IUserRepo userRepo, ITransactionRepo transactionRepo)
         {
             _logger = logger;
             _accountRepo = accountRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _userRepo = userRepo;
+            _transactionRepo = transactionRepo;
         }
 
         [HttpGet]
@@ -102,12 +104,22 @@ namespace LunaBank.Api.Controllers
         {
             try
             {
-                var user =await _userRepo.GetLoginUser();
+                var user = await _userRepo.GetLoginUser();
                 if (user == null)
                 {
                     return NotFound("User not found");
                 }
-                var account = await _accountRepo.Create(type, user);
+
+                var account = new Accounts
+                {
+                    AccountType = type.AccountType,
+                    Balance = 0,
+                    User = user,
+                    CreatedOn = DateTime.Now,
+                    Status = "active"
+                };
+                 _accountRepo.Create(account);
+                 var result = await _accountRepo.Save();
                 var status = "success";
                 var data = new
                 {
@@ -117,7 +129,7 @@ namespace LunaBank.Api.Controllers
                     email = account.User.Email,
                     type = account.AccountType
                 };
-                return Ok(new {status, data});
+                return Ok(new { status, data });
             }
             catch (Exception e)
             {
@@ -127,21 +139,42 @@ namespace LunaBank.Api.Controllers
 
         }
         #endregion
-
+        [Authorize]
         [HttpPost()]
         [Route("debitaccount")]
         public async Task<ActionResult> Debit(DebitModel debit)
         {
             try
             {
-                var model = await _accountRepo.Debit(debit.Amount, debit.AccountNumber);
-
-
-                if (model != null)
+                var account = await _accountRepo.GetAccount(debit.AccountNumber);
+                var oldBalance = account.Balance;
+                var debitAccount = await _accountRepo.Debit(debit.Amount, debit.AccountNumber);
+                if (debitAccount != null)
                 {
+                    var transaction = new Transactions
+                    {
+                        AccountNumber = debit.AccountNumber,
+                        Amount = debit.Amount,
+                        Cashier = "Decagon",
+                        CreatedOn = DateTime.Now,
+                        NewBalance = debitAccount.Balance,
+                        OldBalance = oldBalance,
+                        TransactionType = "debit"
+                    };
+                    _transactionRepo.create(transaction);
+                    await _accountRepo.Save();
+                    var data = new
+                    {
+                        transactionId = transaction.TransactionId,
+                        accountNumber = debit.AccountNumber,
+                        amount = debit.Amount,
+                        accountBalance = debitAccount.Balance,
+                        transactionType = "debit"
+                    };
+                    var status = "success";
                     _logger.LogInformation(
                         $"{debit.Amount} has been debited from your Account {debit.AccountNumber}time {DateTime.Now}");
-                    return Ok($"{debit.Amount} has been debited from your Account {debit.AccountNumber}");
+                    return Ok(new {status, data});
                 }
             }
             catch (Exception e)
