@@ -24,7 +24,11 @@ namespace Lunabank.Data.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.Ignore<AppUser>();
+
             modelBuilder.Entity<Accounts>(entity =>
             {
                 entity.Property(e => e.AccountId).ValueGeneratedNever();

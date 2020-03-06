@@ -5,6 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200304170242_Added identity.cs" />
+    <Compile Remove="Migrations\20200304170242_Added identity.Designer.cs" />
+    <Compile Remove="Migrations\20200305095228_setup.cs" />
+    <Compile Remove="Migrations\20200305095228_setup.Designer.cs" />
+    <Compile Remove="Migrations\20200305113122_setup2.cs" />
+    <Compile Remove="Migrations\20200305113122_setup2.Designer.cs" />
+    <Compile Remove="Migrations\20200305113313_setup2.cs" />
+    <Compile Remove="Migrations\20200305113313_setup2.Designer.cs" />
+    <Compile Remove="Migrations\20200305120031_setup3.cs" />
+    <Compile Remove="Migrations\20200305120031_setup3.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />

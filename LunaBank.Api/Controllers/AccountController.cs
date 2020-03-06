@@ -6,6 +6,7 @@ using AutoMapper;
 using Lunabank.Data.Entities;
 using Lunabank.Data.Models;
 using Lunabank.Data.Repos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +23,16 @@ namespace LunaBank.Api.Controllers
         private readonly IAccounRepo _accountRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserRepo _userRepo;
 
         public AccountController(ILogger<AccountController> logger, IAccounRepo accountRepo, IMapper mapper,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, IUserRepo userRepo)
         {
             _logger = logger;
             _accountRepo = accountRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _userRepo = userRepo;
         }
 
         [HttpGet]
@@ -40,7 +43,6 @@ namespace LunaBank.Api.Controllers
                 var model = await _accountRepo.GetAllAccount();
                 var totalCount = model.ToList().Count;
                 var _pageSize = (pageSize > totalCount) ? totalCount : pageSize;
-
 
 
                 if (totalCount > 0)
@@ -60,12 +62,11 @@ namespace LunaBank.Api.Controllers
             {
                 var error = ex.Message;
                 _logger.LogError(error);
-                return StatusCode(500, new { Error = "Internal Server Error" });
+                return StatusCode(500, new {Error = "Internal Server Error"});
             }
 
             return NotFound("No Account registered yet");
         }
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetAnAccount(Guid id)
@@ -77,8 +78,6 @@ namespace LunaBank.Api.Controllers
 
             try
             {
-
-
                 var model = await _accountRepo.GetAccounts(id);
                 if (model != null)
                 {
@@ -89,9 +88,69 @@ namespace LunaBank.Api.Controllers
             catch (Exception e)
             {
                 _logger.LogTrace(e.Message);
+                return StatusCode(500, new {error = "Internal Server error"});
+            }
+
+            return NotFound("Account Not Available");
+        }
+
+        #region Create
+            
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Create(AccountCreationDto type)
+        {
+            try
+            {
+                var user =await _userRepo.GetLoginUser();
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                var account = await _accountRepo.Create(type, user);
+                var status = "success";
+                var data = new
+                {
+                    accountNumber = account.AccountNumber,
+                    firstName = account.User.FirstName,
+                    lastName = account.User.LastName,
+                    email = account.User.Email,
+                    type = account.AccountType
+                };
+                return Ok(new {status, data});
+            }
+            catch (Exception e)
+            {
+                _logger.LogTrace(e.Message);
                 return StatusCode(500, new { error = "Internal Server error" });
             }
-            return NotFound("Account Not Available");
+
+        }
+        #endregion
+
+        [HttpPost()]
+        [Route("debitaccount")]
+        public async Task<ActionResult> Debit(DebitModel debit)
+        {
+            try
+            {
+                var model = await _accountRepo.Debit(debit.Amount, debit.AccountNumber);
+
+
+                if (model != null)
+                {
+                    _logger.LogInformation(
+                        $"{debit.Amount} has been debited from your Account {debit.AccountNumber}time {DateTime.Now}");
+                    return Ok($"{debit.Amount} has been debited from your Account {debit.AccountNumber}");
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.InnerException?.ToString() ?? e.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+
+            return BadRequest("insufficient fund");
         }
     }
 }
