@@ -18,9 +18,9 @@ namespace LunaBack.Test
                 Assert.True(response.IsSuccessStatusCode);
                 var content = response.Content.ReadAsStringAsync();
                 Assert.NotNull(content);
-                
+
             }
-           
+
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace LunaBack.Test
                 var response = await context.GetAsync(" http://localhost:5000/api/account/d58a53e9-5b26-4dff-be43-390825839a36");
                 Assert.True(response.StatusCode == HttpStatusCode.NotFound);
                 var content = response.Content.ReadAsStringAsync();
-                Assert.StartsWith("Account",content.Result);
+                Assert.StartsWith("Account", content.Result);
 
             }
 

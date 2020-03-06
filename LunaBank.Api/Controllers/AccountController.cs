@@ -40,7 +40,7 @@ namespace LunaBank.Api.Controllers
                 var model = await _accountRepo.GetAllAccount();
                 var totalCount = model.ToList().Count;
                 var _pageSize = (pageSize > totalCount) ? totalCount : pageSize;
-             
+
 
 
                 if (totalCount > 0)
@@ -60,11 +60,13 @@ namespace LunaBank.Api.Controllers
             {
                 var error = ex.Message;
                 _logger.LogError(error);
-                return StatusCode(500, new {Error = "Internal Server Error"});
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
 
             return NotFound("No Account registered yet");
         }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetAnAccount(Guid id)
         {
@@ -76,18 +78,18 @@ namespace LunaBank.Api.Controllers
             try
             {
 
-           
-            var model =await _accountRepo.GetAccounts(id);
-            if (model != null)
-            {
-                var newModel = _mapper.Map<Accounts, AccountModel>(model);
-                return Ok(newModel);
-            }
+
+                var model = await _accountRepo.GetAccounts(id);
+                if (model != null)
+                {
+                    var newModel = _mapper.Map<Accounts, AccountModel>(model);
+                    return Ok(newModel);
+                }
             }
             catch (Exception e)
             {
                 _logger.LogTrace(e.Message);
-                return StatusCode(500, new {error = "Internal Server error"});
+                return StatusCode(500, new { error = "Internal Server error" });
             }
             return NotFound("Account Not Available");
         }
