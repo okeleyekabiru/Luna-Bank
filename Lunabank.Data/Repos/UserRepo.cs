@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Lunabank.Data.Entities;
+using Lunabank.Data.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace Lunabank.Data.Repos
@@ -28,6 +30,11 @@ namespace Lunabank.Data.Repos
             var userId = _httpContextAccessor.HttpContext.User?.Claims?
                 .FirstOrDefault(u => u.Type == "UserID").Value;
             return userId;
+        }
+
+        public async Task<AppUser> GetLoginUser()
+        {
+            return await _context.Users.FindAsync(GetCurrentUserId());
         }
     }
 }

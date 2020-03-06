@@ -92,5 +92,25 @@ namespace LunaBack.Test
             }
         }
 
+        [Fact]
+        public async void createAccount_Test()
+        {
+            using (var context = new HttpClient())
+            {
+                var request = new
+                {
+                    uri = "http://localhost:5000/api/account",
+                    Body = new
+                    {
+                        AccountType = "Current"
+                    }
+                };
+                var response = await context.PostAsync(request.uri, ContentHelper.GetStringContent(request.Body));
+                var value = response.Content.ReadAsStringAsync();
+                Assert.True(response.IsSuccessStatusCode);
+                Assert.NotNull(value);
+            }
+        }
+
     }
 }

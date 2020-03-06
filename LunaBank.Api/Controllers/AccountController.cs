@@ -6,6 +6,7 @@ using AutoMapper;
 using Lunabank.Data.Entities;
 using Lunabank.Data.Models;
 using Lunabank.Data.Repos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +23,16 @@ namespace LunaBank.Api.Controllers
         private readonly IAccounRepo _accountRepo;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserRepo _userRepo;
 
         public AccountController(ILogger<AccountController> logger, IAccounRepo accountRepo, IMapper mapper,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, IUserRepo userRepo)
         {
             _logger = logger;
             _accountRepo = accountRepo;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _userRepo = userRepo;
         }
 
         [HttpGet]
@@ -91,22 +94,39 @@ namespace LunaBank.Api.Controllers
             return NotFound("Account Not Available");
         }
 
+        #region Create
+            
         [HttpPost]
-        public async Task<ActionResult> Create(Accounts accounts)
+        [Authorize]
+        public async Task<ActionResult> Create(AccountCreationDto type)
         {
-            accounts.UserId = "218fc0aa-8da2-485e-9a05-133a1cc82c5a";
-            accounts.AccountId = Guid.NewGuid();
-            accounts.CreatedOn = DateTime.Now;
-
-            var model = await _accountRepo.Create(accounts);
-            if (model != null)
+            try
             {
-                return Ok(model);
+                var user =await _userRepo.GetLoginUser();
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+                var account = await _accountRepo.Create(type, user);
+                var status = "success";
+                var data = new
+                {
+                    accountNumber = account.AccountNumber,
+                    firstName = account.User.FirstName,
+                    lastName = account.User.LastName,
+                    email = account.User.Email,
+                    type = account.AccountType
+                };
+                return Ok(new {status, data});
+            }
+            catch (Exception e)
+            {
+                _logger.LogTrace(e.Message);
+                return StatusCode(500, new { error = "Internal Server error" });
             }
 
-            return BadRequest("Error");
-
         }
+        #endregion
 
         [HttpPost()]
         [Route("debitaccount")]
