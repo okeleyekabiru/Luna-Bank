@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Lunabank.Data.Models;
 using Lunabank.Data.Repos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -42,7 +44,7 @@ namespace LunaBank.Api.Controllers
 
 
         #region Register
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("Register")]
         //Post : api/user/Register
@@ -90,7 +92,7 @@ namespace LunaBank.Api.Controllers
 
 
         #region Login
-
+        [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
         //Post : api/User/Login
@@ -106,7 +108,7 @@ namespace LunaBank.Api.Controllers
                     {
                         new Claim("UserID", user.Id.ToString()),
                     }),
-                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(
                         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)),
                         SecurityAlgorithms.HmacSha256Signature)
@@ -122,10 +124,8 @@ namespace LunaBank.Api.Controllers
             }
         }
 
-        #endregion
 
-
-
+#endregion
 
 
     }
