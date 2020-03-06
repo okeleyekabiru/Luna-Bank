@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Lunabank.Data.Entities;
+using Lunabank.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lunabank.Data.Repos
 {
@@ -75,6 +78,16 @@ namespace Lunabank.Data.Repos
 
 
 
+        }
+
+        public async Task<AppUser> GetUser(string email)
+        {
+            
+              var response =  await _db.Users.FirstOrDefaultAsync(res => res.Email == email);
+
+             
+                  return response;
+              
         }
 
 
