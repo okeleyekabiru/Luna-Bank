@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Lunabank.Data.Entities;
 
 namespace Lunabank.Data.Repos
@@ -17,6 +18,16 @@ namespace Lunabank.Data.Repos
         {
             transaction.TransactionId = Guid.NewGuid();
             _context.Transactions.Add(transaction);
+        }
+
+        public async Task<Transactions> GetTransaction(Guid transactionId)
+        {
+            if (transactionId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(transactionId));
+            }
+
+            return await _context.Transactions.FindAsync(transactionId);
         }
     }
 }

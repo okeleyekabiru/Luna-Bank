@@ -13,7 +13,8 @@ namespace Lunabank.Data.Models
             CreateMap<Accounts, AccountModel>()
                 .ForMember(r=> r.FirstName, o=> o.MapFrom(s=> s.User.FirstName))
                 .ForMember(r=> r.LastName, o=> o.MapFrom(s=> s.User.LastName));
-            
+            CreateMap<Transactions, TransactionDto>();
+
         }
     }
 }
