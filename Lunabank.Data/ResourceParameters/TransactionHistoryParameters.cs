@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lunabank.Data.Models
+namespace Lunabank.Data.ResourceParameters
 {
-    public class TransactionHistory
+    public class TransactionHistoryParameters
     {
         private const int maxPageSize = 10;
         private int _pageSize = 10;
