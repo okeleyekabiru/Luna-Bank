@@ -17,6 +17,7 @@ namespace Lunabank.Data.Entities
         {
         }
 
+
         public virtual DbSet<Accounts> Accounts { get; set; }
         public virtual DbSet<Transactions> Transactions { get; set; }
 
