@@ -6,15 +6,15 @@ namespace Lunabank.Data.ResourceParameters
 {
     public class TransactionHistoryParameters
     {
-        private const int maxPageSize = 10;
+        private const int MaxPageSize = 10;
         private int _pageSize = 10;
         public int PageNumber { get; set; } = 1;
         public DateTime? FromDate { get; set; }
 
-        public int Pagesize
+        public int PageSize
         {
             get => _pageSize;
-            set => _pageSize = value > maxPageSize ? maxPageSize : value;
+            set => _pageSize = value > MaxPageSize ? MaxPageSize : value;
         }
     }
 }
