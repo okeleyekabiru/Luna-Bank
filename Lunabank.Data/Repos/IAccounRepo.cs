@@ -13,7 +13,8 @@ namespace Lunabank.Data.Repos
     {
         Task<IEnumerable<Accounts>> GetAllAccount();
         Task<Accounts> GetAccounts(Guid id);
-        Task<Accounts> Create(AccountCreationDto type, AppUser user);
+        Task<Accounts> GetAccount(string accountNumber);
+        void Create(Accounts account);
         Task<Accounts> Debit(decimal amount, string accountnumber);
         Task<bool> Save();
 
