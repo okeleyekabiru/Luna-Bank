@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Lunabank.Data.Entities;
+using Lunabank.Data.Helper;
+using Lunabank.Data.ResourceParameters;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lunabank.Data.Repos
 {
@@ -29,5 +33,23 @@ namespace Lunabank.Data.Repos
 
             return await _context.Transactions.FindAsync(transactionId);
         }
+
+        public async Task<PagedList<Transactions>> TransactionHistory(TransactionHistoryParameters parameters, string accountNumber)
+        {
+            var transactions = _context.Transactions as IQueryable<Transactions>;
+            if (parameters.FromDate == null)
+            {
+                transactions = transactions.Where(t => t.AccountNumber == accountNumber).OrderByDescending(t => t.CreatedOn);
+            }
+            if (parameters.FromDate != null)
+            {
+                transactions = transactions.Where(t => t.AccountNumber == accountNumber && t.CreatedOn >= parameters.FromDate).OrderByDescending(t => t.CreatedOn);
+            }
+
+            return await PagedList<Transactions>.Create(transactions, parameters.PageNumber, parameters.PageSize);
+
+        }
+
+        
     }
 }
