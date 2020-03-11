@@ -111,6 +111,48 @@ namespace LunaBack.Test
                 Assert.NotNull(value);
             }
         }
+        [Fact]
+        public async void CreditAccountPass_Test()
+        {
+            using (var context = new HttpClient())
+            {
+                var request = new
+                {
+                    Uri = "http://localhost:5000/api/account/creditaccount",
+                    Body = new
+                    {
+                        AccountNumber = "2928382992",
+                        Amount = 200
+                    }
+                };
+                var response = await context.PostAsync(request.Uri, ContentHelper.GetStringContent(request.Body));
+                var value = response.Content.ReadAsStringAsync();
+                Assert.True(response.IsSuccessStatusCode);
+                Assert.NotNull(value);
+
+            }
+        }
+        [Fact]
+        public async void CreditAccountFailed_Test()
+        {
+            using (var context = new HttpClient())
+            {
+                var request = new
+                {
+                    Uri = "http://localhost:5000/api/account/creditaccount",
+                    Body = new
+                    {
+                        AccountNumber = "2928982999",
+                        Amount = 50000
+                    }
+                };
+                var response = await context.PostAsync(request.Uri, ContentHelper.GetStringContent(request.Body));
+                var value = response.Content.ReadAsStringAsync();
+                Assert.True(response.StatusCode == HttpStatusCode.BadRequest);
+                Assert.StartsWith("Invalid ", value.Result);
+
+            }
+        }
 
     }
 }
