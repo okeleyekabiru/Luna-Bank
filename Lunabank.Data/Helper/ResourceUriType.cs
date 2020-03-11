@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Lunabank.Data.Helper
 {
-    class ResourceUriType
+    public enum ResourceUriType
     {
+        PreviousPage,
+        NextPage
     }
 }
