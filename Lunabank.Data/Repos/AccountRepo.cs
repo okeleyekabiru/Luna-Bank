@@ -86,5 +86,22 @@ namespace Lunabank.Data.Repos
         {
             return await _context.SaveChangesAsync() > 0;
         }
+        public async Task<Accounts> Credit(decimal amount, string accountnumber)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(r => r.AccountNumber == accountnumber);
+            if (account == null)
+            {
+                return null;
+            }
+            account.Balance += amount;
+            _context.Entry(account).State = EntityState.Modified;
+            var success = await _context.SaveChangesAsync() > 0;
+            if (success)
+            {
+                return account;
+            }
+            return null;
+
+        }
     }
 }

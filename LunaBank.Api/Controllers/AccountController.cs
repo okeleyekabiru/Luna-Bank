@@ -185,5 +185,29 @@ namespace LunaBank.Api.Controllers
 
             return BadRequest("insufficient fund");
         }
+        [HttpPost()]
+        [Route("creditaccount")]
+        public async Task<ActionResult> Credit(DebitModel debit)
+        {
+            try
+            {
+                var model = await _accountRepo.Credit(debit.Amount, debit.AccountNumber);
+
+
+                if (model != null)
+                {
+                    _logger.LogInformation(
+                        $"{debit.Amount} has been Credited from your Account {debit.AccountNumber}time {DateTime.Now}");
+                    return Ok($"{debit.Amount} has been Credited from your Account {debit.AccountNumber}");
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.InnerException?.ToString() ?? e.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+
+            return BadRequest("Invalid Account Number");
+        }
     }
 }
