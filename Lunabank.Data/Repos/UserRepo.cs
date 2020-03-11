@@ -22,7 +22,7 @@ namespace Lunabank.Data.Repos
         }
         public bool EmailExist(string email)
         {
-            return _context.Users.Any(c => c.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase));
+            return _context.Users.Any(c => c.Email.Equals(email));
         }
 
         public string GetCurrentUserId()
