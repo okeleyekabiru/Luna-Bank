@@ -6,7 +6,7 @@
 *.min.css
 *.min.js
 *.map
-
+Migrations
 _build/
 _site/
 Properties/
