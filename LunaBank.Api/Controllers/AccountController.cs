@@ -187,18 +187,41 @@ namespace LunaBank.Api.Controllers
         }
         [HttpPost()]
         [Route("creditaccount")]
-        public async Task<ActionResult> Credit(DebitModel debit)
+        public async Task<ActionResult> Credit(CreditModel debit)
         {
             try
             {
-                var model = await _accountRepo.Credit(debit.Amount, debit.AccountNumber);
+                var account = await _accountRepo.GetAccount(debit.AccountNumber);
+                var oldBalance = account.Balance;
+                var creditAccount = await _accountRepo.Credit(debit.Amount, debit.AccountNumber);
+                
 
-
-                if (model != null)
+                if (creditAccount != null)
                 {
+                    var transaction = new Transactions
+                    {
+                        AccountNumber = debit.AccountNumber,
+                        Amount = debit.Amount,
+                        Cashier = "Decagon",
+                        CreatedOn = DateTime.Now,
+                        NewBalance = creditAccount.Balance,
+                        OldBalance = oldBalance,
+                        TransactionType = "credit"
+                    };
+                    _transactionRepo.create(transaction);
+                    await _accountRepo.Save();
+                    var data = new
+                    {
+                        transactionId = transaction.TransactionId,
+                        accountNumber = debit.AccountNumber,
+                        amount = debit.Amount,
+                        accountBalance = creditAccount.Balance,
+                        transactionType = "credit"
+                    };
+                    var status = "success";
                     _logger.LogInformation(
                         $"{debit.Amount} has been Credited from your Account {debit.AccountNumber}time {DateTime.Now}");
-                    return Ok($"{debit.Amount} has been Credited from your Account {debit.AccountNumber}");
+                    return Ok(new { status, data });
                 }
             }
             catch (Exception e)

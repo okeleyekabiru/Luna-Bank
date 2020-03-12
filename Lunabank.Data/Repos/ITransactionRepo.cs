@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Lunabank.Data.Entities;
+using Lunabank.Data.Helper;
+using Lunabank.Data.Models;
+using Lunabank.Data.ResourceParameters;
 
 namespace Lunabank.Data.Repos
 {
@@ -10,5 +13,6 @@ namespace Lunabank.Data.Repos
   {
       void create(Transactions transaction);
       Task<Transactions> GetTransaction(Guid transactionId);
+      Task<PagedList<Transactions>> TransactionHistory(TransactionHistoryParameters transactionHistoryParameters, string accountNumber);
   }
 }
