@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using LunaBank.Api.Services;
 using Lunabank.Data.Entities;
 using Lunabank.Data.Models;
 using Lunabank.Data.Repos;
@@ -50,6 +51,7 @@ namespace LunaBank.Api
             services.AddScoped<IAccounRepo, AccountRepo>();
             services.AddScoped<IAdminRepo, AdminRepo>();
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddAutoMapper(typeof(AppUser));
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
