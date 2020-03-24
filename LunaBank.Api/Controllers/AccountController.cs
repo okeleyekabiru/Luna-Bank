@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using LunaBank.Api.Services;
 using Lunabank.Data.Entities;
 using Lunabank.Data.Models;
 using Lunabank.Data.Repos;
@@ -25,9 +27,11 @@ namespace LunaBank.Api.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserRepo _userRepo;
         private readonly ITransactionRepo _transactionRepo;
+        private readonly IEmailService _emailService;
 
-        public AccountController(ILogger<AccountController> logger, IAccounRepo accountRepo, IMapper mapper,
-            IHttpContextAccessor httpContextAccessor, IUserRepo userRepo, ITransactionRepo transactionRepo)
+        public AccountController(ILogger<AccountController> logger, IAccounRepo accountRepo,
+            IMapper mapper, IHttpContextAccessor httpContextAccessor, IUserRepo userRepo,
+            ITransactionRepo transactionRepo, IEmailService emailService)
         {
             _logger = logger;
             _accountRepo = accountRepo;
@@ -35,6 +39,7 @@ namespace LunaBank.Api.Controllers
             _httpContextAccessor = httpContextAccessor;
             _userRepo = userRepo;
             _transactionRepo = transactionRepo;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -64,7 +69,7 @@ namespace LunaBank.Api.Controllers
             {
                 var error = ex.Message;
                 _logger.LogError(error);
-                return StatusCode(500, new {Error = "Internal Server Error"});
+                return StatusCode(500, new { Error = "Internal Server Error" });
             }
 
             return NotFound("No Account registered yet");
@@ -90,14 +95,14 @@ namespace LunaBank.Api.Controllers
             catch (Exception e)
             {
                 _logger.LogTrace(e.Message);
-                return StatusCode(500, new {error = "Internal Server error"});
+                return StatusCode(500, new { error = "Internal Server error" });
             }
 
             return NotFound("Account Not Available");
         }
 
         #region Create
-            
+
         [HttpPost]
         [Authorize]
         public async Task<ActionResult> Create(AccountCreationDto type)
@@ -118,8 +123,8 @@ namespace LunaBank.Api.Controllers
                     CreatedOn = DateTime.Now,
                     Status = "active"
                 };
-                 _accountRepo.Create(account);
-                 var result = await _accountRepo.Save();
+                _accountRepo.Create(account);
+                var result = await _accountRepo.Save();
                 var status = "success";
                 var data = new
                 {
@@ -162,19 +167,37 @@ namespace LunaBank.Api.Controllers
                         TransactionType = "debit"
                     };
                     _transactionRepo.create(transaction);
-                    await _accountRepo.Save();
-                    var data = new
+                    bool success = await _accountRepo.Save();
+                    if (success)
                     {
-                        transactionId = transaction.TransactionId,
-                        accountNumber = debit.AccountNumber,
-                        amount = debit.Amount,
-                        accountBalance = debitAccount.Balance,
-                        transactionType = "debit"
-                    };
-                    var status = "success";
-                    _logger.LogInformation(
-                        $"{debit.Amount} has been debited from your Account {debit.AccountNumber}time {DateTime.Now}");
-                    return Ok(new {status, data});
+                        var loginUser = _userRepo.GetLoginUser().Result;
+                        string subject = $"Luna Bank Transaction Alert [Debit: {debit.Amount}]";
+
+                        string message =
+                            $"Dear {loginUser.FirstName}\n" +
+                            "This is to notify you of a debit transaction on your account\n" +
+                            "Below are the transaction details:\n" +
+                            $"Account number: {debit.AccountNumber}\n" +
+                            $"Transaction ID: {transaction.TransactionId}\n" +
+                            $"Transaction Date: {DateTime.Now}\n" +
+                            $"Amount: {debit.Amount.ToString("C", CultureInfo.CreateSpecificCulture("ng-NG"))}\n" +
+                            $"Account balance: {debitAccount.Balance.ToString("C", CultureInfo.CreateSpecificCulture("ng-NG"))}\n";
+
+                        _emailService.SendMail(loginUser.Email, message, subject);
+                        var data = new
+                        {
+                            transactionId = transaction.TransactionId,
+                            accountNumber = debit.AccountNumber,
+                            amount = debit.Amount,
+                            accountBalance = debitAccount.Balance,
+                            transactionType = "debit"
+                        };
+                        var status = "success";
+                        _logger.LogInformation(
+                            $"{debit.Amount} has been debited from your Account {debit.AccountNumber}time {DateTime.Now}");
+                        return Ok(new { status, data });
+                    }
+                    return StatusCode(500, "Internal Server Error");
                 }
             }
             catch (Exception e)
@@ -194,7 +217,7 @@ namespace LunaBank.Api.Controllers
                 var account = await _accountRepo.GetAccount(debit.AccountNumber);
                 var oldBalance = account.Balance;
                 var creditAccount = await _accountRepo.Credit(debit.Amount, debit.AccountNumber);
-                
+
 
                 if (creditAccount != null)
                 {
@@ -209,19 +232,39 @@ namespace LunaBank.Api.Controllers
                         TransactionType = "credit"
                     };
                     _transactionRepo.create(transaction);
-                    await _accountRepo.Save();
-                    var data = new
+                    bool success = await _accountRepo.Save();
+                    if (success)
                     {
-                        transactionId = transaction.TransactionId,
-                        accountNumber = debit.AccountNumber,
-                        amount = debit.Amount,
-                        accountBalance = creditAccount.Balance,
-                        transactionType = "credit"
-                    };
-                    var status = "success";
-                    _logger.LogInformation(
-                        $"{debit.Amount} has been Credited from your Account {debit.AccountNumber}time {DateTime.Now}");
-                    return Ok(new { status, data });
+                        var loginUser = _userRepo.GetLoginUser().Result;
+                        string subject = $"Luna Bank Transaction Alert [Credit: {debit.Amount}]";
+
+                        string message =
+                            $"Dear {loginUser.FirstName}\n" +
+                            "This is to notify you of a credit transaction on your account\n" +
+                            "Below are the transaction details:\n" +
+                            $"Account number: {debit.AccountNumber}\n" +
+                            $"Transaction ID: {transaction.TransactionId}\n" +
+                            $"Transaction Date: {DateTime.Now}\n" +
+                            $"Amount: {debit.Amount.ToString("C", CultureInfo.CreateSpecificCulture("ng-NG"))}\n" +
+                            $"Account balance: {creditAccount.Balance.ToString("C", CultureInfo.CreateSpecificCulture("ng-NG"))}\n";
+
+                        _emailService.SendMail(loginUser.Email, message, subject);
+
+                        var data = new
+                        {
+                            transactionId = transaction.TransactionId,
+                            accountNumber = debit.AccountNumber,
+                            amount = debit.Amount,
+                            accountBalance = creditAccount.Balance,
+                            transactionType = "credit"
+                        };
+                        var status = "success";
+                        _logger.LogInformation(
+                            $"{debit.Amount} has been Credited from your Account {debit.AccountNumber}time {DateTime.Now}");
+                        return Ok(new { status, data });
+                    }
+
+                    return StatusCode(500, "Internal Server Error");
                 }
             }
             catch (Exception e)
