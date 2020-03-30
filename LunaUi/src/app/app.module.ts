@@ -14,6 +14,7 @@ import { ToastrModule } from "ngx-toastr";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { GetAllAccountComponent } from './account/getallaccount.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountService } from './account/AccountServices';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { HttpClientModule } from '@angular/common/http';
     ]),
   ],
   providers: [
-    
+    AccountService
   ],
   bootstrap: [AppComponent]
 })
