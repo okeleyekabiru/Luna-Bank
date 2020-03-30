@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms'
 import { ApppageComponent } from './Apppage.component';
 import { FooterComponent } from './Footer/footer.component';
 import { UserComponent } from './user/user.component';
+import { RegistrationComponent } from './user/registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { UserComponent } from './user/user.component';
     NavbarComponent,
     ApppageComponent,
     FooterComponent,
-    UserComponent
+    UserComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
