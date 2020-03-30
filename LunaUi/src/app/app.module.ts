@@ -8,20 +8,25 @@ import { RouterModule } from '@angular/router';
 import {FormsModule} from '@angular/forms'
 import { ApppageComponent } from './Apppage.component';
 import { FooterComponent } from './Footer/footer.component';
+import { GetAllAccountComponent } from './account/getallaccount.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     ApppageComponent,
-    FooterComponent
+    FooterComponent,
+    GetAllAccountComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot([
-      { path: 'welcome', component:ApppageComponent },
+      { path: 'welcome', component: ApppageComponent },
+      { path: 'AllAccount', component: GetAllAccountComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
       { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
     ]),
