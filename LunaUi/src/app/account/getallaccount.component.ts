@@ -20,7 +20,7 @@ export class GetAllAccountComponent implements OnInit{
         this.accountService.LoadAllAccount(this.pageSize,this.pageIndex).subscribe({
             next: allAccount => {
               this.AllAccount = allAccount;
-              console.log(allAccount)
+            
             },
             error: err => this.errorMessage = err
         });

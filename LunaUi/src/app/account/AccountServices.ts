@@ -15,7 +15,7 @@ export class AccountService{
            }
            return this.http.get<IAllAccount[]>(`http://localhost:5000/api/account?${pageSize}&${PageIndex}`, headers)
            .pipe(
-               tap(data => console.log('All: ' + JSON.stringify(data))),
+               tap(data => data),
                catchError(this.handleError))
            
     }
