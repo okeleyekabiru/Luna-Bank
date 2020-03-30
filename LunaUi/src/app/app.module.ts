@@ -8,13 +8,15 @@ import { RouterModule } from '@angular/router';
 import {FormsModule} from '@angular/forms'
 import { ApppageComponent } from './Apppage.component';
 import { FooterComponent } from './Footer/footer.component';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     ApppageComponent,
-    FooterComponent
+    FooterComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
