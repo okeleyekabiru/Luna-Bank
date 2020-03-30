@@ -16,10 +16,6 @@ namespace LunaBank.Api
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-<<<<<<< HEAD:LunaBank.Api/Program.cs
-=======
-
->>>>>>> d8c5b2ac8b2a6e1e4be5bbd70ae17d024c9ccb42:Backened/LunaBank.Api/Program.cs
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
