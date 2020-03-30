@@ -10,6 +10,7 @@ import { ApppageComponent } from './Apppage.component';
 import { FooterComponent } from './Footer/footer.component';
 import { GetAllAccountComponent } from './account/getallaccount.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountService } from './account/AccountServices';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { HttpClientModule } from '@angular/common/http';
     ]),
   ],
   providers: [
-    
+    AccountService
   ],
   bootstrap: [AppComponent]
 })
