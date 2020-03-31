@@ -11,3 +11,8 @@ export interface IAllAccount{
     
       
 }
+export interface IAllAccountModel {
+    accountModels: IAllAccount[],
+    nextpage: string,
+    previousPage: string
+}
