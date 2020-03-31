@@ -8,10 +8,9 @@ import { LoginComponent } from './user/login/login.component';
 
 
 const routes: Routes = [
-  // if the route doesnt match any route it loads welcome
-  { path: "**", redirectTo: "welcome", pathMatch: "full" },
+  
   //Home Route
-  { path: " ", redirectTo: "welcome", pathMatch: "full" },
+  { path: "", redirectTo: "welcome", pathMatch: "full" },
   {path: "welcome", component: ApppageComponent},
   {
     path: "user",

@@ -16,7 +16,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from '@angular/common/http';
 import { AccountService } from './account/AccountServices';
 import { GetAllAccountComponent } from './account/getallaccount.component';
-import { LoginComponent } from './user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import { LoginComponent } from './user/login/login.component';
     FooterComponent,
     UserComponent,
     RegistrationComponent,
-    GetAllAccountComponent,
-    LoginComponent
+    GetAllAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +37,9 @@ import { LoginComponent } from './user/login/login.component';
       progressBar: true
     }),
     FormsModule,
-    RouterModule
+    RouterModule.forRoot([
+      { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
+    ]),
   ],
   providers: [
     // account service that would hold all methods to be used in accounts component
