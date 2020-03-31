@@ -20,6 +20,12 @@ namespace Lunabank.Data.Repos
             _context = context;
         }
 
+        public async Task<List<string>> GetAllUserAccount(string userId)
+        {
+            return await _context.Accounts.Where(r => r.UserId.Equals(userId)).Select(r => r.AccountNumber)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Accounts>> GetAllAccount()
         {
             return await _context.Accounts.Include(r => r.User).ToListAsync();

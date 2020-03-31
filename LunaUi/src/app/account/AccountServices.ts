@@ -22,7 +22,39 @@ export class AccountService{
                catchError(this.handleError))
            
     }
-
+  LoadAllAccountNumber():Observable<[]>{
+    let authToken = localStorage.getItem("access_token");
+    let headers = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${authToken}`
+      })
+    
+    }
+    return this.http.get<[]>("http://localhost:5000/api/account/accountnumber", headers)
+      .pipe(tap(data => data),
+      catchError(this.handleError))
+  }
+  postReceiver(body): any{
+    let authToken = localStorage.getItem("access_token");
+    let headers = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${authToken}`
+      })
+    }
+    
+   return this.http.post( "http://localhost:5000/api/account/creditaccount",body,headers).pipe(tap(data=> data),catchError(this.handleError))
+  }
+  postSender(body): any{
+    console.log(body)
+    let authToken = localStorage.getItem("access_token");
+    let headers = {
+      headers: new HttpHeaders({
+        Authorization: `Bearer ${authToken}`
+      })
+    }
+    
+   return this.http.post( "http://localhost:5000/api/account/debitaccount",body,headers).pipe(tap(data=> data),catchError(this.handleError))
+  }
     private handleError(err: HttpErrorResponse) {
         // in a real world app, we may send the server to some remote logging infrastructure
         // instead of just logging it to the console
