@@ -1,19 +1,22 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http'
 import { Observable, throwError } from 'rxjs'
-import { IAllAccount } from '../interface/IAllAccount'
+import { IAllAccount, IAllAccountModel } from '../interface/IAllAccount'
 import { tap, catchError } from 'rxjs/operators'
 import { Injectable } from '@angular/core'
 @Injectable()
 export class AccountService{
 
     constructor(private http:HttpClient){}
-    LoadAllAccount(pageSize = 6,PageIndex = 1)  :Observable<IAllAccount[]>{
+    LoadAllAccount(pageSize = 10, PageIndex = 1): Observable<IAllAccountModel>{
+        
+    
         const   headers = {
                headers: new HttpHeaders({
                Authorization: `Bearer ${JSON.parse(localStorage.getItem("access_token"))}`
            })
            }
-           return this.http.get<IAllAccount[]>(`http://localhost:5000/api/account?${pageSize}&${PageIndex}`, headers)
+           return this.http.get<IAllAccountModel>(`http://localhost:5000/api/account?pageSize=${pageSize}&PageIndex=${PageIndex}`, headers)
+           
            .pipe(
                tap(data => data),
                catchError(this.handleError))
