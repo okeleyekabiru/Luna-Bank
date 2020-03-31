@@ -37,6 +37,7 @@ import { GetAllAccountComponent } from './account/getallaccount.component';
       progressBar: true
     }),
     FormsModule,
+    HttpClientModule,
     RouterModule.forRoot([
       // route for all component
       { path: 'welcome', component: ApppageComponent },
