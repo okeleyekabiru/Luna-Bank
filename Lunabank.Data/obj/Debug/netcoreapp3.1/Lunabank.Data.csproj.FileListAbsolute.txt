@@ -1,0 +1,10 @@
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\bin\Debug\netcoreapp3.1\Lunabank.Data.deps.json
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\bin\Debug\netcoreapp3.1\Lunabank.Data.dll
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\obj\Debug\netcoreapp3.1\Lunabank.Data.csprojAssemblyReference.cache
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\obj\Debug\netcoreapp3.1\Lunabank.Data.AssemblyInfoInputs.cache
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\obj\Debug\netcoreapp3.1\Lunabank.Data.AssemblyInfo.cs
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\bin\Debug\netcoreapp3.1\Lunabank.Data.runtimeconfig.json
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\bin\Debug\netcoreapp3.1\Lunabank.Data.runtimeconfig.dev.json
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\bin\Debug\netcoreapp3.1\Lunabank.Data.pdb
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\obj\Debug\netcoreapp3.1\Lunabank.Data.dll
+C:\Users\toby\source\repos\LunaBank\Lunabank.Data\obj\Debug\netcoreapp3.1\Lunabank.Data.pdb

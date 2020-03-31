@@ -12,7 +12,10 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { ToastrModule } from "ngx-toastr";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientModule } from "@angular/common/http";
+
+import { HttpClientModule } from '@angular/common/http';
+import { AccountService } from './account/AccountServices';
+import { GetAllAccountComponent } from './account/getallaccount.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { HttpClientModule } from "@angular/common/http";
     ApppageComponent,
     FooterComponent,
     UserComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    GetAllAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -32,9 +36,22 @@ import { HttpClientModule } from "@angular/common/http";
     ToastrModule.forRoot({
       progressBar: true
     }),
-    FormsModule
+    FormsModule,
+    HttpClientModule,
+    RouterModule.forRoot([
+      // route for all component
+      { path: 'welcome', component: ApppageComponent },
+      { path: 'AllAccount', component: GetAllAccountComponent },
+      // upon load it locates welcome route
+      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+      // if the route doesnt match any route it loads welcome
+      { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
+    ]),
   ],
-  providers: [],
+  providers: [
+    // account service that would hold all methods to be used in accounts component
+    AccountService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
