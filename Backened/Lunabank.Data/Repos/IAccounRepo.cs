@@ -17,7 +17,7 @@ namespace Lunabank.Data.Repos
         void Create(Accounts account);
         Task<Accounts> Debit(decimal amount, string accountnumber);
         Task<bool> Save();
-
+ Task<List<string>> GetAllUserAccount(string userId);
         Task<Accounts> Credit(decimal amount, string accountnumber);
     }
 }
