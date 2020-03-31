@@ -65,6 +65,9 @@ namespace LunaBank.Api
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
             });
+
+            services.AddCors();
+
             services.AddMvc(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -110,10 +113,13 @@ namespace LunaBank.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder =>
+                builder.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());
+
             //            app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 

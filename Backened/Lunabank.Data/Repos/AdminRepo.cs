@@ -82,12 +82,12 @@ namespace Lunabank.Data.Repos
 
         public async Task<AppUser> GetUser(string email)
         {
-            
-              var response =  await _db.Users.FirstOrDefaultAsync(res => res.Email == email);
 
-             
-                  return response;
-              
+            var response = await _db.Users.FirstOrDefaultAsync(res => res.Email == email);
+
+
+            return response;
+
         }
 
 

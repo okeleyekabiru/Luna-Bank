@@ -20,7 +20,7 @@ namespace LunaBank.Api.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-        private UserManager<AppUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
         private readonly IUserRepo _userRepo;
         private readonly ApplicationSettings _appSettings;
@@ -125,7 +125,7 @@ namespace LunaBank.Api.Controllers
         }
 
 
-#endregion
+        #endregion
 
 
     }
