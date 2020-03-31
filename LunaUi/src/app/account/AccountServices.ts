@@ -4,7 +4,7 @@ import { IAllAccount, IAllAccountModel } from '../interface/IAllAccount'
 import { tap, catchError } from 'rxjs/operators'
 import { Injectable } from '@angular/core'
 @Injectable()
-export class AccountService{
+export class AccountService{ 
 
     constructor(private http:HttpClient){}
     LoadAllAccount(pageSize = 10, PageIndex = 1): Observable<IAllAccountModel>{
