@@ -12,9 +12,10 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { ToastrModule } from "ngx-toastr";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { GetAllAccountComponent } from './account/getallaccount.component';
+
 import { HttpClientModule } from '@angular/common/http';
 import { AccountService } from './account/AccountServices';
+import { GetAllAccountComponent } from './account/getallaccount.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { AccountService } from './account/AccountServices';
     ApppageComponent,
     FooterComponent,
     UserComponent,
-    RegistrationComponent
+    RegistrationComponent,
     GetAllAccountComponent
   ],
   imports: [
