@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from '@angular/common/http';
 import { AccountService } from './account/AccountServices';
 import { GetAllAccountComponent } from './account/getallaccount.component';
+import { LoginComponent } from './user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,28 +26,20 @@ import { GetAllAccountComponent } from './account/getallaccount.component';
     FooterComponent,
     UserComponent,
     RegistrationComponent,
-    GetAllAccountComponent
+    GetAllAccountComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    HttpClientModule,
+    HttpClientModule, 
     ToastrModule.forRoot({
       progressBar: true
     }),
     FormsModule,
-    HttpClientModule,
-    RouterModule.forRoot([
-      // route for all component
-      { path: 'welcome', component: ApppageComponent },
-      { path: 'AllAccount', component: GetAllAccountComponent },
-      // upon load it locates welcome route
-      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-      // if the route doesnt match any route it loads welcome
-      { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
-    ]),
+    RouterModule
   ],
   providers: [
     // account service that would hold all methods to be used in accounts component
