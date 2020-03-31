@@ -26,13 +26,17 @@ import { AccountService } from './account/AccountServices';
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
+      // route for all component
       { path: 'welcome', component: ApppageComponent },
       { path: 'AllAccount', component: GetAllAccountComponent },
+      // upon load it locates welcome route
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+      // if the route doesnt match any route it loads welcome
       { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
     ]),
   ],
   providers: [
+    // account service that would hold all methods to be used in accounts component
     AccountService
   ],
   bootstrap: [AppComponent]
