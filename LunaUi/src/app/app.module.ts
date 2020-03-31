@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AccountService } from './account/AccountServices';
 import { GetAllAccountComponent } from './account/getallaccount.component';
 import { LoginComponent } from './user/login/login.component';
+import { DebitComponent } from './payment/debit.component';
 
 @NgModule({
   declarations: [
@@ -27,14 +28,16 @@ import { LoginComponent } from './user/login/login.component';
     UserComponent,
     RegistrationComponent,
     LoginComponent,
-    GetAllAccountComponent
+    GetAllAccountComponent,
+    DebitComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    HttpClientModule, 
+    HttpClientModule,
+    RouterModule,
     ToastrModule.forRoot({
       progressBar: true
     }),

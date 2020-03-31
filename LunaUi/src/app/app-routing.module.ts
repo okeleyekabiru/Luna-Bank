@@ -5,6 +5,7 @@ import { RegistrationComponent } from './user/registration/registration.componen
 import { GetAllAccountComponent } from './account/getallaccount.component';
 import { ApppageComponent } from './Apppage.component';
 import { LoginComponent } from './user/login/login.component';
+import { DebitComponent } from './payment/debit.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   //Home Route
   { path: "", redirectTo: "welcome", pathMatch: "full" },
   {path: "welcome", component: ApppageComponent},
+  { path: "paymentTransaction", component: DebitComponent },
   {
     path: "user",
     component: UserComponent,

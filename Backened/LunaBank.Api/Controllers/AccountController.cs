@@ -275,5 +275,27 @@ namespace LunaBank.Api.Controllers
 
             return BadRequest("Invalid Account Number");
         }
+        [HttpGet("accountnumber")]
+
+        public async Task<ActionResult> GetAllUserAccount()
+        {
+
+            try
+            {
+                var model = await _accountRepo.GetAllUserAccount(_userRepo.GetCurrentUserId());
+                if (model != null)
+                {
+                    return Ok(model);
+                }
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.InnerException?.ToString() ?? e.Message);
+                return StatusCode(500, "Internal Server Error");
+            }
+
+            return BadRequest();
+        }
     }
 }
