@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from '@angular/common/http';
 import { AccountService } from './account/AccountServices';
 import { GetAllAccountComponent } from './account/getallaccount.component';
+import { LoginComponent } from './user/login/login.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { GetAllAccountComponent } from './account/getallaccount.component';
     FooterComponent,
     UserComponent,
     RegistrationComponent,
+    LoginComponent,
     GetAllAccountComponent
   ],
   imports: [
