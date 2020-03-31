@@ -12,7 +12,8 @@ import { UserComponent } from './user/user.component';
 import { RegistrationComponent } from './user/registration/registration.component';
 import { ToastrModule } from "ngx-toastr";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientModule } from "@angular/common/http";
+import { GetAllAccountComponent } from './account/getallaccount.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { HttpClientModule } from "@angular/common/http";
     FooterComponent,
     UserComponent,
     RegistrationComponent
+    GetAllAccountComponent
   ],
   imports: [
     BrowserModule,
@@ -32,9 +34,17 @@ import { HttpClientModule } from "@angular/common/http";
     ToastrModule.forRoot({
       progressBar: true
     }),
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot([
+      { path: 'welcome', component: ApppageComponent },
+      { path: 'AllAccount', component: GetAllAccountComponent },
+      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+      { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
+    ]),
   ],
-  providers: [],
+  providers: [
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
