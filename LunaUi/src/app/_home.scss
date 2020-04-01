@@ -1,0 +1,42 @@
+.banner-area {
+  background: url(../assets/img/3584729.jpg) right;
+  background-size: cover;
+  min-height: 50vh;
+  .primary-btn {
+    padding-left: 40px;
+    padding-right: 40px;
+    border-radius: 3px;
+  }
+  .overlay-bg {
+    background-color: rgba(#04091e, 0.85);
+  }
+}
+.convert-area {
+  position: relative;
+  margin-top: -105px;
+  z-index: 2;
+  .cols-img {
+    margin-bottom: 30px;
+  }
+}
+.banner-content {
+  text-align: center;
+  h1 {
+    color: white;
+    font-size: 100px;
+    font-weight: 700;
+    line-height: 1em;
+    margin-top: 20px;
+    span {
+      font-weight: 700;
+    }
+
+    @media (max-width: 414px) {
+      font-size: 40px;
+    }
+  }
+  h5 {
+    font-weight: 400;
+    letter-spacing: 3px;
+  }
+}
