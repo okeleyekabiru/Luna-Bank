@@ -16,8 +16,8 @@ export class RegistrationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (localStorage.getItem("token") != null)
-      this.router.navigateByUrl("/home");
+    if (localStorage.getItem("access_token") != null)
+      this.router.navigateByUrl("/welcome");
     this.service.formModel.reset();
   }
 
@@ -45,7 +45,18 @@ export class RegistrationComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
+         switch (err.status) {
+           case 400:
+             this.toastr.error(
+               "Email is already taken",
+               "Registration failed."
+             );
+             break;
+
+           default:
+             this.toastr.error(err.error, "Registration failed.");
+             break;
+         }
       }
     );
   }

@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from '@angular/common/http';
 import { AccountService } from './account/AccountServices';
 import { GetAllAccountComponent } from './account/getallaccount.component';
+import { LoginComponent } from './user/login/login.component';
 import { DebitComponent } from './payment/debit.component';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { DebitComponent } from './payment/debit.component';
     FooterComponent,
     UserComponent,
     RegistrationComponent,
+    LoginComponent,
     GetAllAccountComponent,
     DebitComponent
   ],
@@ -40,14 +42,7 @@ import { DebitComponent } from './payment/debit.component';
       progressBar: true
     }),
     FormsModule,
-    HttpClientModule,
     RouterModule.forRoot([
-      // route for all component
-      { path: 'welcome', component: ApppageComponent },
-      { path: 'AllAccount', component: GetAllAccountComponent },
-      // upon load it locates welcome route
-      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-      // if the route doesnt match any route it loads welcome
       { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
     ]),
   ],
